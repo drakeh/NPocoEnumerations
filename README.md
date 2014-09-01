@@ -47,6 +47,16 @@ public class EnumerationMapper : DefaultMapper
     }
 ```
 
+LINQ Query Support
+==================
+
+NPoco 2.0 introduced the ability to [fetch objects using LINQ queries](https://github.com/schotime/NPoco/wiki/Simple-linq-queries). This sample code also demonstrates how to override NPoco's default parameter converter to allow the Headspring Enumeration to be used in a LINQ query to fetch database objects. A sample usage follows: 
+
+```C#
+IDatabase db = new Database("connString");
+db.FetchWhere<BlogPost>(x => x.Category == Category.Books);
+```
+
 Sources
 =================
 Thanks to a helpful breakdown here - https://github.com/schotime/NPoco/issues/58

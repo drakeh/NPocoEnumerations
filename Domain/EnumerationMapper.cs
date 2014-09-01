@@ -27,5 +27,12 @@ namespace Domain
         {
             return GetFromDbConverter(destMemberInfo.GetMemberInfoType(), sourceType);
         }
+        
+        public override System.Func<object, object> GetParameterConverter(System.Type sourceType)
+        {
+            if (sourceType.IsEnumeration())
+                return x => sourceType.GetProperty("Value").GetValue(x, new object[] {});
+            return base.GetParameterConverter(sourceType);
+        }
     }
 }

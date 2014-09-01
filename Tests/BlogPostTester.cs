@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain;
 using Domain.Models;
 using Headspring;
@@ -19,6 +20,9 @@ namespace Tests
         {
             using (var db = Domain.DatabaseFactory.GetDatabase())
             {
+                // Make sure the table is empty before starting the tests
+                db.DeleteWhere<BlogPost>("");
+
                 var bookPost = new BlogPost()
                     {
                         Category = Category.Books,
@@ -86,6 +90,17 @@ namespace Tests
                 post.Category.Value.ShouldEqual(Category.Websites.Value);
             }
 
+        }
+
+        [Test]
+        public void should_be_able_to_use_enumeration_in_linq_query()
+        {
+            using (var db = Domain.DatabaseFactory.GetDatabase())
+            {
+                var posts = db.FetchWhere<BlogPost>(x => x.Category == Category.Books);
+                posts.Count.ShouldEqual(1);
+                posts.First().Category.Value.ShouldEqual(Category.Books.Value);
+            }
         }
     }
 
